@@ -4,9 +4,6 @@
 
 ## Kurucu System İçin Bağımlılıklar :
 
-[[CLİNUX/Bağımlılıklar|Bağımlılıklar]]
-,
-
 ```bash
 sudo apt update
 sudo apt install grub-efi-amd64 -y
@@ -38,18 +35,9 @@ sudo chmod 777 ./tmp/debroot/
 
 ## Temel System Kurulumu : Debootstrap
 
-[[CLİNUX/debootstrap|debootstrap]]
- - mantic
- - noble
- - bookworm
-
 ```bash
 
-##ubuntu
 sudo debootstrap mantic ./tmp/debroot/
-
-##debian
-sudo debootstrap bookworm ./tmp/debroot/
 
 sudo su
 
@@ -63,9 +51,6 @@ sudo chroot ./tmp/debroot/ apt dist-upgrade -y
 
 ## Uygulama Repoları : sources.list
 
-[[CLİNUX/sources.list|sources.list]]
-,
-
 ```bash
 sudo nano ./tmp/debroot/etc/apt/sources.list
 ```
@@ -76,26 +61,12 @@ deb http://security.ubuntu.com/ubuntu/ mantic-security main restricted universe
 deb http://archive.ubuntu.com/ubuntu/ mantic-updates main restricted universe
 ```
 
-```read
-deb http://deb.debian.org/debian/ bookworm main contrib non-free non-free-firmware
-deb http://deb.debian.org/debian/ bookworm-updates main contrib non-free non-free-firmware
-deb http://deb.debian.org/debian/ bookworm-backports main contrib non-free non-free-firmware
-deb http://security.debian.org/debian-security/ bookworm-security main contrib non-free non-free-firmware
-```
-
 ```bash
 sudo chroot ./tmp/debroot/ apt update
 sudo chroot ./tmp/debroot/ apt upgrade -y
-
-sudo apt install bookworm-backports -y
 ```
 
-Daha sonra temizlenecek.
-
 ## Yerel Ağ Tanımlamaları : resolv.conf
-
-[[CLİNUX/resolv.conf|resolv.conf]]
-,
 
 ```bash
 sudo nano ./tmp/debroot/etc/resolv.conf
@@ -108,9 +79,6 @@ search home
 ```
 
 ## Yerelleştirme (Türkçe, Türkiye)
-
-[[CLİNUX/Yerelleştirme|Yerelleştirme]]
-,
 
 ```bash
 sudo nano ./tmp/debroot/etc/locale.gen
@@ -146,9 +114,6 @@ KEYMAP=trq
 
 ## Bellek Yapılanması
 
-[[CLİNUX/Disklerin Tanıtılması|Disklerin Tanıtılması]]
-,
-
 ```bash
 sudo nano ./tmp/debroot/etc/fstab
 ```
@@ -159,9 +124,6 @@ tmpfs /tmp tmpfs rw,nosuid,nodev,inode64 0 0
 ```
 
 ## Kernel Çekirdeği
-
-[[CLİNUX/Kernel Yükle|Kernel Yükle]]
-,
 
 ```bash
 sudo chroot ./tmp/debroot/ apt update
@@ -174,9 +136,6 @@ sudo chroot ./tmp/debroot/ apt install sudo dhcpcd5 -y
 sudo chroot ./tmp/debroot/ apt install linux-image-amd64 -y
 sudo chroot ./tmp/debroot/ apt install linux-headers-amd64 -y
 sudo chroot ./tmp/debroot/ apt install console-setup ntp -y
-
-
-
 
 
 sudo apt install bookworm-backports -y
@@ -198,14 +157,7 @@ sudo chroot ./tmp/debroot/ apt install build-essential zlib1g-dev libncurses5-de
 sudo chroot ./tmp/debroot/ apt install git dosfstools amd64-microcode nano -y
 
 
-
-
-
 sudo chroot ./tmp/debroot/ apt install dosfstools amd64-microcode network-manager git cryptsetup sudo -y
-
-
-
-
 
 
 sudo chroot ./tmp/debroot/ apt install tzdata curl -y
@@ -230,9 +182,6 @@ sudo chroot ./tmp/debroot/ update-initramfs -u
 ```
 
 ## Kullanıcılar
-
-[[CLİNUX/Kullanıcılar|Kullanıcılar]]
-,
 
 ```bash
 sudo chroot ./tmp/debroot/ useradd -mG sudo admin
@@ -285,9 +234,6 @@ git clone https://github.com/Mustafaozver/erp.git ./tmp/debroot/0/
 ```
 
 ## Desktop Environment
-
-[[CLİNUX/DE Yükleme|DE Yükleme]]
-,
 
 ### KDE Plasma
 
@@ -369,8 +315,6 @@ user-session=bspwm
 
 ##### Kiosk Modu
 
-[Fetching Title#m91w](https://askubuntu.com/questions/1260370/start-chrome-via-bash-from-lightdm)
-
 ```bash
 sudo nano ./tmp/debroot/usr/share/xsessions/kiosk.desktop
 ```
@@ -410,9 +354,6 @@ ctrl + alt + t
 
 ## Gerekli Uygulamalar
 
-[[CLİNUX/Gerekli Programlar|Gerekli Programlar]]
-,
-
 ```bash
 sudo chroot ./tmp/debroot/ apt install nano -y
 
@@ -438,11 +379,6 @@ sudo chroot ./tmp/debroot/ apt install pacman-package-manager -y
 
 sudo chroot ./tmp/debroot/ loadkeys trq.map
 
-
-
-
-
-
 sudo mkdir -p ./tmp/debroot/__tmp
 
 wget -O ./tmp/debroot/__tmp/google-chrome-stable.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -467,9 +403,6 @@ sudo make install
 ```
 
 ## Temizlik
-
-[[CLİNUX/Temizlik|Temizlik]]
-,
 
 ```bash
 sudo chroot ./tmp/debroot/ apt update
@@ -523,9 +456,6 @@ set timeout=60
 
 ## İmaj Al : Squashfs
 
-[[CLİNUX/MKSQUASHFS|MKSQUASHFS]]
-,
-
 ```bash
 sudo rm ./tmp/iso/live/filesystem.squashfs
 
@@ -539,13 +469,8 @@ sudo mksquashfs ./tmp/debroot/ ./tmp/iso/live/filesystem.squashfs -comp gzip -wi
 
 sudo rm ./tmp/ISO.iso
 
-## ubuntu
 sudo cp -pf ./tmp/debroot/boot/initrd.img* ./tmp/iso/live
 sudo cp -pf ./tmp/debroot/boot/vmlinuz* ./tmp/iso/live
-
-## debian
-sudo cp -pf ./tmp/debroot/initrd.img* ./tmp/iso/live
-sudo cp -pf ./tmp/debroot/vmlinuz* ./tmp/iso/live
 
 sudo grub-mkrescue ./tmp/iso/ -o ./tmp/ISO.iso
 
