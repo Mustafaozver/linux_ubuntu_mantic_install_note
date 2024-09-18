@@ -10,6 +10,9 @@ sudo apt install grub-efi-amd64 -y
 sudo apt install debootstrap -y
 sudo apt install arch-install-scripts -y
 sudo apt install pacman-package-manager -y
+
+## ISO gereklilikleri
+sudo apt install debootstrap xorriso squashfs-tools mtools grub-pc-bin grub-efi devscripts git nano -y
 ```
 
 ## Formatlama
